@@ -157,15 +157,17 @@ python source/guardian.py
 
 ```
 smart-guardian-shield/
-├── README.md          作品說明（本檔）
-├── REFLECTION.md      反思與學習心得
-├── requirements.txt   Python 套件需求
-├── source/            程式原始碼
-│   ├── guardian.py    主程式（Tkinter 介面＋偵測＋畫面切換）
-│   ├── detect_test.py 人員辨識與區域判斷測試
-│   └── camera_test.py 鏡頭測試
-├── evidence/          執行畫面與 Demo
-└── models/            模型放置位置（需自行下載，不含於 Repo）
+├── README.md                作品說明（本檔）
+├── REFLECTION.md            反思與學習心得
+├── requirements.txt         Python 套件需求
+├── source/                  程式原始碼
+│   ├── guardian.py          主程式（Tkinter 介面＋偵測＋畫面切換）
+│   ├── dashboard.py         Power BI 風格儀表板繪製
+│   ├── preview_dashboard.py 儀表板預覽（不需開鏡頭）
+│   ├── detect_test.py       人員辨識與區域判斷測試
+│   └── camera_test.py       鏡頭測試
+├── evidence/                執行畫面與 Demo
+└── models/                  模型放置位置（需自行下載，不含於 Repo）
 ```
 
 ## 10. 隱私與安全說明
