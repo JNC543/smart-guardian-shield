@@ -16,7 +16,7 @@
 
 ## 1. 作品說明
 
-Smart Guardian Shield 是一套在 Windows 筆電上運作的 AI 防護程式。使用者啟動防護後，系統透過筆電內建鏡頭持續擷取影像，並以 **OpenCV + MobileNet SSD** 辨識畫面中的人員。當有人出現在預先設定的左右兩側監測區域時，程式會自動以全螢幕顯示一個預先製作的「設定程式」畫面，達到即時切換畫面的效果。使用者可按 `Esc` 回到原本畫面，也可隨時暫停或停止防護。
+Smart Guardian Shield 是一套在 Windows 筆電上運作的 AI 防護程式。使用者啟動防護後，系統透過筆電內建鏡頭持續擷取影像，並以 **OpenCV + MobileNet SSD** 辨識畫面中的人員。當有人出現在預先設定的左右兩側監測區域時，程式會自動以全螢幕顯示一個Power BI 風格的數據儀表板畫面，模擬正在處理工作資料的情境，達到即時切換畫面的效果。使用者可按 `Esc` 回到原本畫面，也可隨時暫停或停止防護。
 
 ### 核心功能
 
@@ -24,7 +24,7 @@ Smart Guardian Shield 是一套在 Windows 筆電上運作的 AI 防護程式。
 - **AI 人員辨識**：使用 MobileNet SSD 辨識畫面中的 `person`
 - **指定區域偵測**：畫面中間為使用者本人所在位置（不觸發），左右兩側為監測區
 - **連續畫面確認**：需連續多個畫面偵測到才觸發，降低誤判
-- **自動切換畫面**：觸發後全螢幕顯示預先設計的設定程式頁面
+- **自動切換畫面**：觸發後全螢幕顯示預先設計的儀表板
 - **手動恢復**：按 `Esc` 回到原本畫面，並有冷卻時間避免立刻再次觸發
 
 ## 2. AI 相關性
@@ -53,13 +53,14 @@ Smart Guardian Shield 是一套在 Windows 筆電上運作的 AI 防護程式。
 | AI 辨識 | MobileNet SSD |
 | 影像處理 | OpenCV (`opencv-python<5`) |
 | 使用者介面 | Tkinter |
+| 畫面繪製 | Tkinter Canvas（自行繪製 Power BI 風格儀表板，不需額外套件） |
 
 運作流程：
 
 ```
 啟動防護 → 擷取鏡頭影像 → MobileNet SSD 辨識人員
         → 判斷是否在左右監測區 → 連續數個畫面成立
-        → 全螢幕顯示設定程式頁面 → 使用者按 Esc 恢復
+        → 全螢幕顯示儀表板頁面 → 使用者按 Esc 恢復
 ```
 
 ## 5. 環境需求
@@ -92,13 +93,23 @@ pip install -r requirements.txt
 
 完成後結構如下：
 
+完成後結構如下：
+
 ```
 smart-guardian-shield/
 ├── models/
 │   ├── MobileNetSSD_deploy.caffemodel
 │   └── MobileNetSSD_deploy.prototxt
 ├── source/
-└── ...
+│   ├── guardian.py
+│   ├── dashboard.py
+│   ├── preview_dashboard.py
+│   ├── detect_test.py
+│   └── camera_test.py
+├── evidence/
+├── README.md
+├── REFLECTION.md
+└── requirements.txt
 ```
 
 **步驟 4：執行**（請在專案根目錄執行）
@@ -111,7 +122,7 @@ python source/guardian.py
 
 1. 開啟程式後會出現控制視窗，按 **啟動防護**
 2. 使用者正常坐在畫面中間時不會觸發
-3. 當有人進入畫面左側或右側監測區，程式自動切換為全螢幕的設定程式頁面
+3. 當有人進入畫面左側或右側監測區，程式自動切換為全螢幕的數據儀表板
 4. 按鍵盤 **Esc** 回到原本畫面
 5. 可隨時按 **暫停／繼續** 或 **停止防護**
 
