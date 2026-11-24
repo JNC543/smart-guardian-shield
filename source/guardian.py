@@ -1,19 +1,20 @@
 import threading
 import time
 import tkinter as tk
-from tkinter import ttk
 
 import cv2
 import numpy as np
+
+from dashboard import draw_dashboard
 
 # ===== 設定 =====
 PROTOTXT = "models/MobileNetSSD_deploy.prototxt"
 MODEL = "models/MobileNetSSD_deploy.caffemodel"
 CONF_THRESHOLD = 0.5   # 辨識信心度門檻
 PERSON_ID = 15         # person 的類別編號
-LEFT_ZONE = 0.35
-RIGHT_ZONE = 0.65
-HITS_NEEDED = 2
+LEFT_ZONE = 0.25       # 左側監測區（畫面左 25%）
+RIGHT_ZONE = 0.75      # 右側監測區（畫面右 25%）
+HITS_NEEDED = 3        # 連續幾個畫面都偵測到才觸發
 COOLDOWN_SEC = 3       # 關閉假畫面後的冷卻秒數
 FONT = "Microsoft JhengHei"
 # ================
@@ -23,7 +24,7 @@ class GuardianApp:
     def __init__(self, root):
         self.root = root
         root.title("Smart Guardian Shield")
-        root.geometry("320x270")
+        root.minsize(320, 270)  # 不固定大小，讓視窗依內容自動調整（高 DPI 螢幕才不會被切掉）
         root.resizable(False, False)
 
         self.stop_event = threading.Event()
@@ -151,50 +152,22 @@ class GuardianApp:
                 self.show_decoy()
         self.root.after(100, self.poll)
 
-    # ---------- 假的「設定程式」畫面 ----------
+    # ---------- 假的工作畫面（Power BI 風格儀表板） ----------
     def show_decoy(self):
         win = tk.Toplevel(self.root)
         self.decoy = win
-        win.title("System Configuration Utility")
+        win.title("Sales Performance - Dashboard")
         win.attributes("-fullscreen", True)
         win.attributes("-topmost", True)
-        win.configure(bg="white")
+        win.configure(bg="#F3F2F1")
         win.bind("<Escape>", lambda e: self.close_decoy())
 
-        tk.Label(win, text="System Configuration Utility  v2.3",
-                 font=(FONT, 20, "bold"), bg="#1f3a5f", fg="white",
-                 anchor="w", padx=20).pack(fill="x", ipady=14)
-
-        body = tk.Frame(win, bg="white")
-        body.pack(fill="both", expand=True, padx=40, pady=20)
-
-        tk.Label(body, text="Network Parameters", font=(FONT, 14, "bold"),
-                 bg="white").grid(row=0, column=0, sticky="w", pady=6)
-        form = [("Server Address", "192.168.10.25"),
-                ("Port", "8080"),
-                ("Timeout (sec)", "30"),
-                ("Retry Count", "3")]
-        for r, (name, val) in enumerate(form, start=1):
-            tk.Label(body, text=name, font=(FONT, 11), bg="white").grid(
-                row=r, column=0, sticky="w", pady=4)
-            e = ttk.Entry(body, width=30)
-            e.insert(0, val)
-            e.grid(row=r, column=1, sticky="w", padx=20)
-
-        tk.Label(body, text="Parameter Table", font=(FONT, 14, "bold"),
-                 bg="white").grid(row=6, column=0, sticky="w", pady=(24, 6))
-        tree = ttk.Treeview(body, columns=("p", "v", "s"),
-                            show="headings", height=8)
-        for col, title in (("p", "Parameter"), ("v", "Value"), ("s", "Status")):
-            tree.heading(col, text=title)
-            tree.column(col, width=220)
-        rows = [("max_connections", "128", "OK"), ("buffer_size", "4096", "OK"),
-                ("log_level", "INFO", "OK"), ("cache_ttl", "600", "OK"),
-                ("compression", "enabled", "OK"), ("auto_update", "disabled", "OK")]
-        for row in rows:
-            tree.insert("", "end", values=row)
-        tree.grid(row=7, column=0, columnspan=3, sticky="w")
-
+        W = win.winfo_screenwidth()
+        H = win.winfo_screenheight()
+        canvas = tk.Canvas(win, width=W, height=H, bg="#F3F2F1",
+                           highlightthickness=0)
+        canvas.pack(fill="both", expand=True)
+        draw_dashboard(canvas, W, H)
         win.focus_force()
 
     def close_decoy(self):
