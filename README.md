@@ -141,9 +141,7 @@ python source/guardian.py
 
 **人員辨識與監測區域**（綠框＝使用者在中間；紅框＝進入監測區）
 
-（請將截圖檔名替換於下方）
-
-<!-- ![辨識畫面](evidence/detect_demo.png) -->
+detect_test
 
 **自動切換畫面**
 
