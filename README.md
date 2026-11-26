@@ -141,7 +141,7 @@ python source/guardian.py
 
 **人員辨識與監測區域**（綠框＝使用者在中間；紅框＝進入監測區）
 
-detect_test
+detect_test.png
 
 **自動切換畫面**
 
@@ -149,7 +149,7 @@ detect_test
 
 **Demo 影片**
 
-（請填入影片檔名或 YouTube 連結）
+test.mp4
 
 ## 9. 專案結構
 
