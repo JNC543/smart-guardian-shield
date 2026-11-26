@@ -93,8 +93,6 @@ pip install -r requirements.txt
 
 完成後結構如下：
 
-完成後結構如下：
-
 ```
 smart-guardian-shield/
 ├── models/
