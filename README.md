@@ -1,4 +1,4 @@
-# Smart Guardian Shield｜智慧防偵測盾牌
+# Smart Guardian Shield｜背後靈 防偵測
 
 > 結合 AI 人員辨識與自動畫面切換的個人防護系統
 
